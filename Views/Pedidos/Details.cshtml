@@ -1,0 +1,72 @@
+﻿@model PizzeriaWeb3._1.Models.Pedidos
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Pedidos</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fecha)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fecha)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Mesa)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Mesa.NombreMesas)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Usuario)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Usuario.NombreUsuario)
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-12">
+            Productos
+        </dt></dl>
+        @foreach (var item in ViewBag.PedidoProductos)
+        {
+            <dl class="row">
+        
+                    <dt class="col-sm-2">
+                        ProductoId
+                    </dt>
+                    <dd class="col-sm-10">
+                        @item.ProductoId
+                    </dd>
+                    <dt class="col-sm-2">
+                        Precio
+                    </dt>
+                    <dd class="col-sm-10">
+                        @item.Precio
+                    </dd>
+                    <dt class="col-sm-2">
+                        Cantidad
+                    </dt>
+                    <dd class="col-sm-10">
+                        @item.Cantidad
+                    </dd>
+        
+
+            </dl>
+        }
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.IdPedidos">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

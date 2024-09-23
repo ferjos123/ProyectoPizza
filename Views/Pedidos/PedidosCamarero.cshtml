@@ -1,0 +1,52 @@
+﻿@model IEnumerable<PizzeriaWeb3._1.Models.Pedidos>
+
+@{
+    ViewData["Title"] = "Lista de Pedidos";
+}
+
+<h1>Lista de pedidos: </h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mesa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Usuario)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mesa.NombreMesas)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Usuario.NombreUsuario)
+                </td>
+                <td>
+                    <a asp-action="Create" asp-controller="PedidoProductoes" class="btn btn-primary">Añadir productos</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <div>
+        <a asp-action="Camareros" asp-controller="Home" class="btn btn-primary">Volver</a>
+    </div>
+</table>

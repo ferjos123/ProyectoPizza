@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Administración";
+}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Panel de Administración</h2>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Inventariado</h5>
+                    <p class="card-text">Gestion de los productos disponibles y su stock.</p>
+                    <a href="@Url.Action("Index", "Productos")" class="btn btn-primary">Administrar Inventario</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Usuarios</h5>
+                     <p class="card-text">Gestion de usuarios.</p> 
+                    <a href="@Url.Action("Create", "Usuarios")" class="btn btn-success">Añadir Usuario</a>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Lista de Mesas</h5>
+                    <a href="@Url.Action("Index", "Mesas")" class="btn btn-info">Ver:</a>
+                </div>
+            </div>
+        </div> 
+
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Lista de Pedidos</h5>
+                    <a href="@Url.Action("Index", "Pedidos")" class="btn btn-info">Ver:</a>
+                </div>
+            </div>
+        </div>
+
+        <a href="@Url.Action("Index", "Home")" class="btn btn-success">Cerrar sesion</a>
+        @* <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Pedidos</h5>
+                     <p class="card-text">Ver lista de Pedidos.</p> 
+                    <a href="@Url.Action("Index", "PedidosProductoes")" class="btn btn-info">Ver Ver</a>
+                </div>
+            </div>
+        </div> *@
+    </div>
+</div>
