@@ -1,0 +1,39 @@
+﻿@model IEnumerable<PizzeriaWeb3._1.Models.Mesas>
+
+@{
+    ViewData["Title"] = "Lista de Mesas Pizzería Da Piccola";
+}
+
+<h1>Lista de Mesas:</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreMesas)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreMesas)
+                </td>
+                @* <td>
+            @Html.DisplayFor(modelItem => item.Usuario.NombreUsuario)
+            </td> *@
+                <td>
+                    <a href="@Url.Action("Index", "Pedidos")" class="btn btn-info">Ver lista de pedidos:</a>
+                    <a asp-action="Create" asp-controller="PedidoProductoes" class="btn btn-primary">Añadir pedido</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+    <div>
+        <a asp-action="Camareros" asp-controller="Home" class="btn btn-primary">Volver</a>
+    </div>
+</table>

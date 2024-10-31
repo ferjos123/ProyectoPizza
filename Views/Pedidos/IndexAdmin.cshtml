@@ -1,0 +1,60 @@
+﻿@model IEnumerable<PizzeriaWeb3._1.Models.Pedidos>
+
+@{
+    ViewData["Title"] = "Pedidos";
+}
+
+<h1>Lista de Pedidos:</h1>
+
+<p>
+    <a asp-action="Create">¡Añadir Nuevo Pedido!</a>
+</p>
+<div>
+    <a asp-controller="Administracion" asp-controller="Home" class="btn btn-primary">Volver</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mesa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Usuario)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mesa.NombreMesas)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Usuario.NombreUsuario)
+                </td>
+                <td>
+                    @*                 <a asp-action="Edit" asp-route-id="@item.IdPedidos">Editar</a> | *@
+                    <a asp-action="Details" asp-route-id="@item.IdPedidos">Detalles</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdPedidos">Borrar</a>
+                                     <a asp-action="Create" asp-controller="PedidoProductoes" class="btn btn-primary">Añadir productos</a> 
+                </td>
+            </tr>
+
+
+        }
+    </tbody>
+</table>

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<PizzeriaWeb3._1.Models.PedidoProducto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdPedidoProducto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pedido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Producto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cantidad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdPedidoProducto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pedido.IdPedidos)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producto.NombreProducto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Precio)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IdPedidoProducto }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IdPedidoProducto }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.PedidoId})
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

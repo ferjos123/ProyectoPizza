@@ -1,0 +1,100 @@
+﻿@model PizzeriaWeb3._1.Models.ViewModels.PedidoProductoViewModel
+
+@{
+    ViewData["Title"] = "Editar Pedido";
+}
+
+<h2>Editar Pedido</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="IdPedidos" />
+
+    <!-- Seleccionar Mesa -->
+    <div class="form-group">
+        <label>Mesa</label>
+        <select asp-for="MesaId" asp-items="ViewBag.Mesas" class="form-control"></select>
+    </div>
+
+    <!-- Seleccionar Usuario -->
+    <div class="form-group">
+        <label>Usuario</label>
+        <select asp-for="UsuarioId" asp-items="ViewBag.Usuarios" class="form-control"></select>
+    </div>
+
+    <!-- Lista de productos, cantidades y precios -->
+    <h4>Productos del Pedido</h4>
+
+    <div id="productos-list">
+        @for (int i = 0; i < Model.PedidoProductos.Count; i++)
+        {
+            <div class="producto-item">
+                <!-- Producto -->
+                <div class="form-group">
+                    <label>Producto</label>
+                    <select asp-for="@Model.PedidoProductos[i].ProductoId" asp-items="ViewBag.Productos" class="form-control"></select>
+                </div>
+
+                <!-- Cantidad -->
+                <div class="form-group">
+                    <label>Cantidad</label>
+                    <input asp-for="@Model.PedidoProductos[i].Cantidad" class="form-control" type="number" min="1" />
+                </div>
+
+                <!-- Precio -->
+                <div class="form-group">
+                    <label>Precio</label>
+                    <input asp-for="@Model.PedidoProductos[i].Precio" class="form-control" type="text" readonly />
+                </div>
+            </div>
+        }
+    </div>
+
+    <button type="button" class="btn btn-secondary" onclick="agregarProducto()">Agregar Producto</button>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+</form>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <a href="@Url.Action("PedidosCamarero", "Pedidos")" class="btn btn-primary">Ver Lista de Pedidos</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Función para agregar un nuevo producto dinámicamente
+        function agregarProducto() {
+            var index = document.querySelectorAll('.producto-item').length;
+
+            var newProduct = `
+                        <div class="producto-item">
+                            <div class="form-group">
+                                <label>Producto</label>
+                                <select name="PedidoProductos[${index}].ProductoId" class="form-control">
+        @foreach (var producto in ViewBag.Productos)
+        {
+                                            <option value="@producto.Value">@producto.Text</option>
+        }
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Cantidad</label>
+                                <input name="PedidoProductos[${index}].Cantidad" class="form-control" type="number" min="1" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Precio</label>
+                                <input name="PedidoProductos[${index}].Precio" class="form-control" type="text" readonly />
+                            </div>
+                            <hr />
+                        </div>`;
+
+            document.getElementById('productos-list').insertAdjacentHTML('beforeend', newProduct);
+        }
+    </script>
+}

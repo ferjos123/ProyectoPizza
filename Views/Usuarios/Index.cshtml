@@ -1,0 +1,45 @@
+﻿@model IEnumerable<PizzeriaWeb3._1.Models.Usuarios> 
+
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<h1>Lista de Usuarios:</h1>
+
+<p>
+    <a asp-action="Create">¡Crear un nuevo usuario!</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreUsuario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rol)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreUsuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rol.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdUsuario">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.IdUsuario">Detalles</a> | 
+                <a asp-action="Delete" asp-route-id="@item.IdUsuario">Borrar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+    
+</table>
+<div>
+    <a asp-action="Administracion" asp-controller="Home" class="btn btn-primary">Volver</a>
+</div>

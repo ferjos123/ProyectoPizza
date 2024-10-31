@@ -1,0 +1,49 @@
+﻿
+@model PizzeriaWeb3._1.Models.Usuarios
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+ 
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+@* @section Styles {
+    <style>
+        .text-center {
+            background-color: pink !important;
+        }
+    </style>
+} *@
+<div class="text-center">
+    @if (ViewData["IsLogin"] != null && (bool)ViewData["IsLogin"])
+    {
+        <h1 class="display-4">Iniciar Sesión</h1>
+        <div class="col-md-4 offset-md-4">
+            <form asp-action="Index" method="post">
+                <div class="form-group">
+                    <label asp-for="NombreUsuario"></label>
+                    <input asp-for="NombreUsuario" class="form-control" />
+                    <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" type="password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <h1 class="display-4">Página Principal</h1>
+       
+    }
+</div>
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+

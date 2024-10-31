@@ -1,0 +1,27 @@
+﻿@model PizzeriaWeb3._1.Models.Mesas
+
+@{
+    ViewData["Title"] = "Borrar Mesas";
+}
+
+<h1>Borrar mesa:</h1>
+
+<h3>¿Estás seguro de querer borrar esta mesa?</h3>
+<div>
+    <h4>Mesas</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NombreMesas)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NombreMesas)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="IdMesas" />
+        <input type="submit" value="Borrar" class="btn btn-danger" /> |
+        <a asp-action="Index">¡Volver!</a>
+    </form>
+</div>

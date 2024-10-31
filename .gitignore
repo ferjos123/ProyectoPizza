@@ -1,0 +1,52 @@
+# Archivos de configuración locales de Visual Studio
+.vscode/
+.vs/
+
+# Binarios compilados
+bin/
+obj/
+
+# Paquetes NuGet
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Archivos de configuración del sistema
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Configuración de publicación de VS y demás archivos temporales
+*.publish/
+*.cache/
+*.log
+ipch/
+_ReSharper*
+*.ideavimrc
+
+# Librerías de JavaScript, si estás usando Node.js en el proyecto
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Archivos generados
+*.dll
+*.exe
+*.pdb
+*.mdb
+*.log
+*.vscode
+
+# Configuraciones de Docker
+docker-compose.override.yml
+Dockerfile
+.env
+
+# Archivos de entorno local y temporales
+*.swp
+*.bak
+*.tmp
