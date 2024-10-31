@@ -39,7 +39,11 @@
         <dt class="col-sm-12">
             Productos
         </dt></dl>
+<<<<<<< HEAD
         @foreach (var item in ViewBag.PedidoProductos)
+=======
+        @if(ViewBag.PedidoProductos!=null) {@foreach (var item in ViewBag.PedidoProductos) 
+>>>>>>> master
         {
             <dl class="row">
         
@@ -63,10 +67,24 @@
                     </dd>
         
 
+<<<<<<< HEAD
             </dl>
         }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.IdPedidos">Edit</a> |
+=======
+            </dl>}
+    }else
+    {
+        <p>
+            sin registros.
+        </p>
+    }
+</div>
+<div>
+@*     <a asp-action="Edit" asp-route-id="@Model?.IdPedidos">Edit</a> | *@
+    <a href="@Url.Action("DetailsPdf", "Pedidos", new { id = Model.IdPedidos })">Descargar PDF</a>
+>>>>>>> master
     <a asp-action="Index">Back to List</a>
 </div>

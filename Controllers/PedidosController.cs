@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaWeb3._1.Data;
 using PizzeriaWeb3._1.Models;
+<<<<<<< HEAD
+=======
+using Microsoft.AspNetCore.Mvc;
+using Rotativa.AspNetCore;
+>>>>>>> master
 
 namespace PizzeriaWeb3._1.Controllers
 {
@@ -19,6 +24,14 @@ namespace PizzeriaWeb3._1.Controllers
             _context = context;
         }
 
+<<<<<<< HEAD
+=======
+        public async Task<IActionResult> IndexAdmin()
+        {
+            var pizzeriaContext = _context.Pedidos.Include(p => p.Mesa).Include(p => p.Usuario);
+            return View(await pizzeriaContext.ToListAsync());
+        }
+>>>>>>> master
         // GET: Pedidos
         public async Task<IActionResult> Index()
         {
@@ -47,12 +60,61 @@ namespace PizzeriaWeb3._1.Controllers
             {
                 return NotFound();
             }
+<<<<<<< HEAD
             ViewData["PedidoProductos"] = await _context.PedidoProductos
         .Where(pp => pp.PedidoId == id)
         .ToListAsync(); ;
             return View(pedidos);
         }
 
+=======
+
+            ViewData["PedidoProductos"] = await _context.PedidoProductos
+                .Where(pp => pp.PedidoId == id)
+                .ToListAsync();
+
+            return View(pedidos);  // Retorna la vista HTML normal
+        }
+
+        // Nueva acción para generar el PDF de la misma vista Details
+        public async Task<IActionResult> DetailsPdf(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var pedidos = await _context.Pedidos
+                .Include(p => p.Mesa)
+                .Include(p => p.Usuario)
+                .FirstOrDefaultAsync(m => m.IdPedidos == id);
+            if (pedidos == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.PedidoProductos = await _context.PedidoProductos
+            .Where(pp => pp.PedidoId == id)
+            .ToListAsync();
+
+            if (ViewBag.PedidoProductos == null)
+            {
+                // Manejamos la situación donde no hay productos para este pedido
+                ViewBag.PedidoProductos = new List<PedidoProducto>();
+            }
+
+
+            return new ViewAsPdf("Details", pedidos)
+            {
+                FileName = "ReportePedido.pdf",
+                PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait
+            };
+        }
+
+
+
+>>>>>>> master
         // GET: Pedidos/Create
         public IActionResult Create()
         {
@@ -129,7 +191,11 @@ namespace PizzeriaWeb3._1.Controllers
         }
 
         // GET: Pedidos/Delete/5
+<<<<<<< HEAD
         public async Task<IActionResult> Delete(int? id)
+=======
+        public async Task<IActionResult> Delete(int id)
+>>>>>>> master
         {
             if (id == null)
             {
@@ -148,6 +214,7 @@ namespace PizzeriaWeb3._1.Controllers
             return View(pedidos);
         }
 
+<<<<<<< HEAD
         // POST: Pedidos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -163,9 +230,44 @@ namespace PizzeriaWeb3._1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+=======
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var pedido = await _context.Pedidos
+                .Include(p => p.PedidoProductos) 
+                .FirstOrDefaultAsync(p => p.IdPedidos == id);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            if (pedido.PedidoProductos != null && pedido.PedidoProductos.Count > 0)
+            {
+                _context.PedidoProductos.RemoveRange(pedido.PedidoProductos);
+            }
+
+            // Eliminar el pedido
+            _context.Pedidos.Remove(pedido);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+>>>>>>> master
         private bool PedidosExists(int id)
         {
             return _context.Pedidos.Any(e => e.IdPedidos == id);
         }
+<<<<<<< HEAD
+=======
+
+        
+>>>>>>> master
     }
 }

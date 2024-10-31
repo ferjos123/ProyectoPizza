@@ -18,6 +18,10 @@ namespace PizzeriaWeb3._1.Models
         [Required]
         public int StockProducto { get; set; }
 
+<<<<<<< HEAD
+=======
+        public string? ImagenUrl { get; set; }
+>>>>>>> master
         public ICollection<PedidoProducto>? PedidoProductos { get; set; }
     }
 }

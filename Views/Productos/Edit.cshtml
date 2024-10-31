@@ -10,7 +10,11 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+<<<<<<< HEAD
         <form asp-action="Edit">
+=======
+        <form asp-action="Edit" enctype="multipart/form-data" method="post">
+>>>>>>> master
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IdProducto" />
             <div class="form-group">
@@ -28,6 +32,20 @@
                 <input asp-for="StockProducto" class="form-control" />
                 <span asp-validation-for="StockProducto" class="text-danger"></span>
             </div>
+<<<<<<< HEAD
+=======
+            <!-- Mostrar la imagen actual -->
+            <div class="form-group">
+                <label>Imagen actual:</label><br />
+                <img src="@ViewBag.ImagenActual" alt="Imagen del producto" style="max-width:200px;" />
+            </div>
+
+            <!-- Campo para seleccionar una nueva imagen -->
+            <div class="form-group">
+                <label>Nueva Imagen (opcional)</label>
+                <input type="file" name="nuevaImagen" class="form-control" />
+            </div>
+>>>>>>> master
             @* <div class="form-group">
                 <label asp-for="UsuarioId" class="control-label"></label>
                 <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId"></select>

@@ -23,6 +23,10 @@ namespace PizzeriaWeb3._1.Models
         [ForeignKey("UsuarioId")]
         public Usuarios? Usuario { get; set; }
 
+<<<<<<< HEAD
         public ICollection<PedidoProducto>? PedidoProductos { get; set; }
+=======
+        public ICollection<PedidoProducto> PedidoProductos { get; set; }
+>>>>>>> master
     }
 }

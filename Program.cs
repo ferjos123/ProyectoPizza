@@ -20,7 +20,14 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+<<<<<<< HEAD
 app.UseStaticFiles();
+=======
+//agregue esto por el pfd, el use static ya estaba
+Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", "Rotativa");
+app.UseStaticFiles();
+app.MapDefaultControllerRoute();
+>>>>>>> master
 
 app.UseRouting();
 

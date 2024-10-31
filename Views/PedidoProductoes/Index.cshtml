@@ -31,6 +31,7 @@
         </tr>
     </thead>
     <tbody>
+<<<<<<< HEAD
 @foreach (var item in Model) {
         <tr>
             <td>
@@ -55,5 +56,32 @@
             </td>
         </tr>
 }
+=======
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdPedidoProducto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pedido.IdPedidos)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Producto.NombreProducto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Precio)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IdPedidoProducto }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IdPedidoProducto }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.PedidoId})
+                </td>
+            </tr>
+        }
+>>>>>>> master
     </tbody>
 </table>

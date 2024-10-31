@@ -146,6 +146,7 @@ namespace PizzeriaWeb3._1.Controllers
                 return NotFound();
             }
 
+<<<<<<< HEAD
             var pedidoProducto = await _context.PedidoProductos.FindAsync(id);
             if (pedidoProducto == null)
             {
@@ -154,27 +155,140 @@ namespace PizzeriaWeb3._1.Controllers
             ViewData["PedidoId"] = new SelectList(_context.Pedidos, "IdPedidos", "IdPedidos", pedidoProducto.PedidoId);
             ViewData["ProductoId"] = new SelectList(_context.Productos, "IdProducto", "NombreProducto", pedidoProducto.ProductoId);
             return View(pedidoProducto);
+=======
+            // Obtener el pedido con sus productos asociados
+            var pedido = await _context.Pedidos
+                .Include(p => p.PedidoProductos)
+                .FirstOrDefaultAsync(m => m.IdPedidos == id);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            // Cargar datos para los SelectLists
+            ViewData["Productos"] = new SelectList(_context.Productos, "IdProducto", "NombreProducto");
+            ViewData["Mesas"] = new SelectList(_context.Mesas, "IdMesas", "NombreMesas");
+            ViewData["Usuarios"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario");
+
+            // Mapear el pedido a un ViewModel para la vista
+            var model = new PedidoProductoViewModel
+            {
+                IdPedidos = pedido.IdPedidos,
+                MesaId = pedido.MesaId,
+                UsuarioId = pedido.UsuarioId,
+                PedidoProductos = pedido.PedidoProductos.Select(pp => new ProductoPedidoViewModel
+                {
+                    ProductoId = pp.ProductoId ?? 0,
+                    Cantidad = pp.Cantidad,
+                    Precio = pp.Precio
+                }).ToList()
+            };
+
+            return View(model);
+>>>>>>> master
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+<<<<<<< HEAD
         public async Task<IActionResult> Edit(int id, [Bind("IdPedidoProducto,PedidoId,ProductoId,Cantidad,Precio")] PedidoProducto pedidoProducto)
         {
             if (id != pedidoProducto.PedidoId)
+=======
+        public async Task<IActionResult> Edit(int id, PedidoProductoViewModel model)
+        {
+            if (id != model.IdPedidos)
+>>>>>>> master
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+<<<<<<< HEAD
                 try
                 {
                     _context.Update(pedidoProducto);
+=======
+                // Obtener el pedido original para hacer las actualizaciones
+                var pedido = await _context.Pedidos
+                    .Include(p => p.PedidoProductos)
+                    .FirstOrDefaultAsync(m => m.IdPedidos == id);
+
+                if (pedido == null)
+                {
+                    return NotFound();
+                }
+
+                // Actualizar detalles del pedido
+                pedido.MesaId = model.MesaId;
+                pedido.UsuarioId = model.UsuarioId;
+                pedido.Fecha = DateTime.Now; // Actualiza la fecha de modificación
+
+                double totalPedido = 0;
+
+                // Procesar cada producto en el pedido
+                foreach (var item in model.PedidoProductos)
+                {
+                    var producto = await _context.Productos.FindAsync(item.ProductoId);
+                    if (producto != null && producto.StockProducto >= item.Cantidad)
+                    {
+                        // Buscar si el producto ya estaba en el pedido
+                        var pedidoProducto = pedido.PedidoProductos.FirstOrDefault(pp => pp.ProductoId == item.ProductoId);
+
+                        if (pedidoProducto != null)
+                        {
+                            // Si el producto ya estaba, actualizamos su cantidad y precio
+                            producto.StockProducto += pedidoProducto.Cantidad; // Devolver el stock antiguo
+                            pedidoProducto.Cantidad = item.Cantidad;
+                            producto.StockProducto -= item.Cantidad; // Reducir el stock nuevo
+                            pedidoProducto.Precio = producto.PrecioProducto;
+                        }
+                        else
+                        {
+                            // Si es un nuevo producto en el pedido
+                            producto.StockProducto -= item.Cantidad;
+
+                            pedido.PedidoProductos.Add(new PedidoProducto
+                            {
+                                PedidoId = pedido.IdPedidos,
+                                ProductoId = item.ProductoId,
+                                Cantidad = item.Cantidad,
+                                Precio = producto.PrecioProducto
+                            });
+                        }
+
+                        // Calcular el total
+                        totalPedido += item.Cantidad * producto.PrecioProducto;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", $"Stock insuficiente para el producto {producto?.NombreProducto}");
+                        ViewData["Productos"] = new SelectList(_context.Productos, "IdProducto", "NombreProducto");
+                        ViewData["Mesas"] = new SelectList(_context.Mesas, "IdMesas", "NombreMesas");
+                        ViewData["Usuarios"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario");
+                        return View(model);
+                    }
+                }
+
+                // Actualizar el total del pedido
+                pedido.Total = totalPedido;
+
+                // Guardar los cambios en la base de datos
+                try
+                {
+                    _context.Update(pedido);
+>>>>>>> master
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+<<<<<<< HEAD
                     if (!PedidoProductoExists((int)pedidoProducto.PedidoId))
+=======
+                    if (!PedidoExists(pedido.IdPedidos))
+>>>>>>> master
                     {
                         return NotFound();
                     }
@@ -183,6 +297,7 @@ namespace PizzeriaWeb3._1.Controllers
                         throw;
                     }
                 }
+<<<<<<< HEAD
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PedidoId"] = new SelectList(_context.Pedidos, "IdPedidos", "IdPedidos", pedidoProducto.PedidoId);
@@ -190,6 +305,24 @@ namespace PizzeriaWeb3._1.Controllers
             return View(pedidoProducto);
         }
 
+=======
+
+                return RedirectToAction("PedidosCamarero", "Pedidos");
+            }
+
+            ViewData["Productos"] = new SelectList(_context.Productos, "IdProducto", "NombreProducto");
+            ViewData["Mesas"] = new SelectList(_context.Mesas, "IdMesas", "NombreMesas");
+            ViewData["Usuarios"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario");
+            return View(model);
+        }
+
+        private bool PedidoExists(int id)
+        {
+            return _context.Pedidos.Any(e => e.IdPedidos == id);
+        }
+
+
+>>>>>>> master
         // GET: PedidoProductoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -198,16 +331,27 @@ namespace PizzeriaWeb3._1.Controllers
                 return NotFound();
             }
 
+<<<<<<< HEAD
             var pedidoProducto = await _context.PedidoProductos
                 .Include(p => p.Pedido)
                 .Include(p => p.Producto)
                 .FirstOrDefaultAsync(m => m.PedidoId == id);
             if (pedidoProducto == null)
+=======
+            var pedido = await _context.Pedidos
+                .FirstOrDefaultAsync(m => m.IdPedidos == id);
+
+            if (pedido == null)
+>>>>>>> master
             {
                 return NotFound();
             }
 
+<<<<<<< HEAD
             return View(pedidoProducto);
+=======
+            return View(pedido);
+>>>>>>> master
         }
 
         // POST: PedidoProductoes/Delete/5
@@ -215,6 +359,7 @@ namespace PizzeriaWeb3._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+<<<<<<< HEAD
             var pedidoProducto = await _context.PedidoProductos.FindAsync(id);
             if (pedidoProducto != null)
             {
@@ -225,6 +370,22 @@ namespace PizzeriaWeb3._1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+=======
+            var pedido = await _context.Pedidos.FindAsync(id);
+
+            if (pedido != null)
+            {
+                var pedidoProductos = _context.PedidoProductos.Where(pp => pp.PedidoId == id);
+                _context.PedidoProductos.RemoveRange(pedidoProductos); // Eliminar los productos relacionados
+                _context.Pedidos.Remove(pedido); // Eliminar el pedido
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index)); // Vuelve al índice o donde desees redirigir
+        }
+
+
+>>>>>>> master
         private bool PedidoProductoExists(int id)
         {
             return _context.PedidoProductos.Any(e => e.PedidoId == id);

@@ -19,11 +19,20 @@ namespace PizzeriaWeb3._1.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+<<<<<<< HEAD
+=======
+            modelBuilder.Entity<Pedidos>()
+                .HasMany(p => p.PedidoProductos)
+                .WithOne(pp => pp.Pedido)
+                .HasForeignKey(pp => pp.PedidoId)
+                .OnDelete(DeleteBehavior.Cascade);
+>>>>>>> master
             // Clave compuesta para la tabla PedidoProducto (relación muchos a muchos)
             modelBuilder.Entity<PedidoProducto>()
                 .HasKey(pp => new { pp.PedidoId, pp.ProductoId });
 
             // Relación entre PedidoProducto y Pedidos
+<<<<<<< HEAD
             modelBuilder.Entity<PedidoProducto>()
                 .HasOne(pp => pp.Pedido)
                 .WithMany(p => p.PedidoProductos)
@@ -36,6 +45,20 @@ namespace PizzeriaWeb3._1.Data
                 .WithMany(p => p.PedidoProductos)
                 .HasForeignKey(pp => pp.ProductoId)
                 .OnDelete(DeleteBehavior.Restrict);  // Evitar eliminación en cascada
+=======
+            //modelBuilder.Entity<PedidoProducto>()
+            //    .HasOne(pp => pp.Pedido)
+            //    .WithMany(p => p.PedidoProductos)
+            //    .HasForeignKey(pp => pp.PedidoId)
+            //    .OnDelete(DeleteBehavior.Restrict);  // Evitar eliminación en cascada
+
+            // Relación entre PedidoProducto y Productos
+            //modelBuilder.Entity<PedidoProducto>()
+            //    .HasOne(pp => pp.Producto)
+            //    .WithMany(p => p.PedidoProductos)
+            //    .HasForeignKey(pp => pp.ProductoId)
+            //    .OnDelete(DeleteBehavior.Restrict);  // Evitar eliminación en cascada
+>>>>>>> master
 
             // Relación uno a muchos entre Mesas y Pedidos
             modelBuilder.Entity<Pedidos>()
@@ -51,7 +74,13 @@ namespace PizzeriaWeb3._1.Data
                 .WithMany(u => u.Pedidos)
                 .HasForeignKey(p => p.UsuarioId)
                 .OnDelete(DeleteBehavior.Restrict);  // Evitar eliminación en cascada
+<<<<<<< HEAD
 
+=======
+            modelBuilder.Entity<Pedidos>()
+                .Property(p => p.IdPedidos)
+                .ValueGeneratedOnAdd();
+>>>>>>> master
         }
 
 

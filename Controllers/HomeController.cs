@@ -64,6 +64,10 @@ namespace PizzeriaWeb3._1.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Inicio de sesión no válido.");
+<<<<<<< HEAD
+=======
+                    HttpContext.Response.StatusCode = 401;
+>>>>>>> master
                 }
             }
 

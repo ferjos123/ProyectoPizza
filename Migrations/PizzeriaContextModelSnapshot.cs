@@ -41,10 +41,17 @@ namespace PizzeriaWeb3._1.Migrations
 
             modelBuilder.Entity("PizzeriaWeb3._1.Models.PedidoProducto", b =>
                 {
+<<<<<<< HEAD
                     b.Property<int>("PedidoId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductoId")
+=======
+                    b.Property<int?>("PedidoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductoId")
+>>>>>>> master
                         .HasColumnType("int");
 
                     b.Property<int>("Cantidad")
@@ -100,6 +107,12 @@ namespace PizzeriaWeb3._1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdProducto"));
 
+<<<<<<< HEAD
+=======
+                    b.Property<string>("ImagenUrl")
+                        .HasColumnType("nvarchar(max)");
+
+>>>>>>> master
                     b.Property<string>("NombreProducto")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

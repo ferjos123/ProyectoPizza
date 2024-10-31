@@ -17,6 +17,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.StockProducto)
             </th>
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
             @* <th>
             @Html.DisplayNameFor(model => model.Usuario)
             </th> *@
@@ -40,8 +44,16 @@
             @Html.DisplayFor(modelItem => item.Usuario.NombreUsuario)
             </td> *@
                 <td>
+<<<<<<< HEAD
                     <a asp-action="DetalleCarta" asp-route-id="@item.IdProducto">Detalles:</a> |
                 </td>
+=======
+                    <a asp-action="DetalleCarta" asp-route-id="@item.IdProducto">
+                        <img src="@item.ImagenUrl" alt="Imagen del Producto" style="width:150px;" />
+                    </a>
+                </td>
+
+>>>>>>> master
             </tr>
         }
     </tbody>

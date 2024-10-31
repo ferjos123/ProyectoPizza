@@ -5,6 +5,10 @@ namespace PizzeriaWeb3._1.Models.ViewModels
 {
     public class PedidoProductoViewModel
     {
+<<<<<<< HEAD
+=======
+        public int IdPedidos { get; set; }
+>>>>>>> master
         public int MesaId { get; set; }
         public int UsuarioId { get; set; }
         public List<ProductoPedidoViewModel> PedidoProductos { get; set; } = new List<ProductoPedidoViewModel>();
