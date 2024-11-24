@@ -8,11 +8,11 @@ namespace PizzeriaWeb3._1.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        //private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, PizzeriaContext context)
+        public HomeController(/*ILogger<HomeController> logger,*/ PizzeriaContext context)
         {
-            _logger = logger;
+            //_logger = logger;
             _context = context;
         }
 
