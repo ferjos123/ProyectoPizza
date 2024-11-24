@@ -4,20 +4,22 @@
     ViewData["Title"] = "Carta";
 }
 
-<h1>¡Nuestra Carta!</h1>
+<link rel="stylesheet" href="~/css/stylesCarta.css" />
+
+<h1 class="TituloCarta">¡Nuestra Carta!</h1>
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="NameProduct">
                 @Html.DisplayNameFor(model => model.NombreProducto)
             </th>
-            <th>
+            <th class="PrecioProduct">
                 @Html.DisplayNameFor(model => model.PrecioProducto)
             </th>
-            <th>
+            <th class="StockProduct">
                 @Html.DisplayNameFor(model => model.StockProducto)
             </th>
-
+                
             @* <th>
             @Html.DisplayNameFor(model => model.Usuario)
             </th> *@

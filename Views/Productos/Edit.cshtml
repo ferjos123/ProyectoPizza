@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Editar";
 }
-
+<link rel="stylesheet" href="~/css/stylesList.css" />
 <h1>Editar:</h1>
 
 <h4>Productos</h4>
@@ -13,21 +13,32 @@
         <form asp-action="Edit" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IdProducto" />
+
             <div class="form-group">
                 <label asp-for="NombreProducto" class="control-label"></label>
                 <input asp-for="NombreProducto" class="form-control" />
                 <span asp-validation-for="NombreProducto" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="PrecioProducto" class="control-label"></label>
                 <input asp-for="PrecioProducto" class="form-control" />
                 <span asp-validation-for="PrecioProducto" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="StockProducto" class="control-label"></label>
                 <input asp-for="StockProducto" class="form-control" />
                 <span asp-validation-for="StockProducto" class="text-danger"></span>
             </div>
+
+            <!-- Nuevo campo para editar Detalle -->
+            <div class="form-group">
+                <label asp-for="Detalle" class="control-label"></label>
+                <textarea asp-for="Detalle" class="form-control"></textarea>
+                <span asp-validation-for="Detalle" class="text-danger"></span>
+            </div>
+
             <!-- Mostrar la imagen actual -->
             <div class="form-group">
                 <label>Imagen actual:</label><br />
@@ -39,11 +50,7 @@
                 <label>Nueva Imagen (opcional)</label>
                 <input type="file" name="nuevaImagen" class="form-control" />
             </div>
-            @* <div class="form-group">
-                <label asp-for="UsuarioId" class="control-label"></label>
-                <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId"></select>
-                <span asp-validation-for="UsuarioId" class="text-danger"></span>
-            </div> *@
+
             <div class="form-group">
                 <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
@@ -56,5 +63,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

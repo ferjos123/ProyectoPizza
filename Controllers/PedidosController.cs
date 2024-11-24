@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaWeb3._1.Data;
 using PizzeriaWeb3._1.Models;
-using Microsoft.AspNetCore.Mvc;
 using Rotativa.AspNetCore;
 
 namespace PizzeriaWeb3._1.Controllers

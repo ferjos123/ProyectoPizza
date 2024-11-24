@@ -1,12 +1,13 @@
 ﻿@{
     ViewData["Title"] = "Panel de Trabajo:";
 }
+<link rel="stylesheet" href="~/css/stylesCamareros.css" />
 <div class="container mt-5">
     <h2 class="text-center mb-4">Panel de Trabajo:</h2>
 
     <div class="row">
         
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">Carta:</h5>
@@ -16,23 +17,15 @@
         </div>
 
 
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">Lista de Mesas</h5>
-                    <a href="@Url.Action("IndexCamareros", "Mesas")" class="btn btn-info">Ver</a>
+                    <a href="@Url.Action("IndexCamareros", "Mesas")" class="btn btn-info">Ver:</a>
                 </div>
             </div>
         </div>
         <div> <a href="@Url.Action("Index", "Home")" class="btn btn-success">Cerrar sesion</a></div>
-        @* <div class="col-md-4">
-        <div class="card text-center">
-        <div class="card-body">
-        <h5 class="card-title">Pedidos</h5>
-        <p class="card-text">Ver lista de Pedidos.</p>
-        <a href="@Url.Action("Index", "PedidosProductoes")" class="btn btn-info">Ver Ver</a>
-        </div>
-        </div>
-        </div> *@
+
     </div>
 </div>

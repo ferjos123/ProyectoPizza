@@ -137,9 +137,10 @@ namespace PizzeriaWeb3._1.Controllers
             return View(productos);
         }
 
+        // POST: Productos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdProducto,NombreProducto,PrecioProducto,StockProducto,UsuarioId,ImagenUrl")] Productos productos, IFormFile nuevaImagen)
+        public async Task<IActionResult> Edit(int id, [Bind("IdProducto,NombreProducto,PrecioProducto,StockProducto,Detalle,UsuarioId,ImagenUrl")] Productos productos, IFormFile nuevaImagen)
         {
             if (id != productos.IdProducto)
             {
@@ -150,10 +151,9 @@ namespace PizzeriaWeb3._1.Controllers
             {
                 try
                 {
-                    // Manejar la carga de una nueva imagen
+
                     if (nuevaImagen != null && nuevaImagen.Length > 0)
                     {
-                        // Obtener la ruta de la carpeta wwwroot/imagenes/productos
                         var rutaCarpeta = Path.Combine(_env.WebRootPath, "imagenes/productos");
                         var nombreArchivo = Guid.NewGuid().ToString() + Path.GetExtension(nuevaImagen.FileName);
                         var rutaArchivo = Path.Combine(rutaCarpeta, nombreArchivo);
@@ -163,19 +163,12 @@ namespace PizzeriaWeb3._1.Controllers
                             Directory.CreateDirectory(rutaCarpeta);
                         }
 
-                        // Guardar la nueva imagen en el servidor
                         using (var stream = new FileStream(rutaArchivo, FileMode.Create))
                         {
                             await nuevaImagen.CopyToAsync(stream);
                         }
 
-                        // Asignar la nueva ruta de la imagen al producto
                         productos.ImagenUrl = "/imagenes/productos/" + nombreArchivo;
-                    }
-                    else
-                    {
-                        // Si no se sube una nueva imagen, mantener la imagen actual
-                        productos.ImagenUrl = productos.ImagenUrl; // Mantener la imagen actual
                     }
 
                     _context.Update(productos);
@@ -198,6 +191,7 @@ namespace PizzeriaWeb3._1.Controllers
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario");
             return View(productos);
         }
+
 
 
         // GET: Productos/Delete/5

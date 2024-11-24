@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Añadir Productos";
 }
-
+<link rel="stylesheet" href="~/css/stylesList.css" />
 <h1>Crear Nuevo Producto:</h1>
 
 <h4>Productos</h4>
@@ -12,26 +12,45 @@
     <div class="col-md-4">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="NombreProducto" class="control-label"></label>
                 <input asp-for="NombreProducto" class="form-control" />
                 <span asp-validation-for="NombreProducto" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="PrecioProducto" class="control-label"></label>
                 <input asp-for="PrecioProducto" class="form-control" />
                 <span asp-validation-for="PrecioProducto" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="StockProducto" class="control-label"></label>
                 <input asp-for="StockProducto" class="form-control" />
                 <span asp-validation-for="StockProducto" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
-                <label>Imagen del Producto</label>
-                <input type="file" name="imagen" class="form-control" />
-                <span class="text-danger"></span>
+
+            <!-- Nuevo campo para Detalle -->
+            <div class="form-group">
+                <label asp-for="Detalle" class="control-label"></label>
+                <textarea asp-for="Detalle" class="form-control"></textarea>
+                <span asp-validation-for="Detalle" class="text-danger"></span>
+            </div>
+
+            @* <!-- Mostrar la imagen actual -->
+            <div class="form-group">
+                <label>Imagen actual:</label><br />
+                <img src="@ViewBag.ImagenActual" alt="Imagen del producto" style="max-width:200px;" />
+            </div>
+
+            <!-- Campo para seleccionar una nueva imagen -->
+            <div class="form-group">
+                <label>Nueva Imagen (opcional)</label>
+                <input type="file" name="nuevaImagen" class="form-control" />
             </div> *@
+
+
             <div class="form-group">
                 <input type="submit" value="Crear" class="btn btn-primary" />
             </div>
@@ -44,5 +63,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

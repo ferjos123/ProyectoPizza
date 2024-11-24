@@ -3,23 +3,23 @@
 @{
     ViewData["Title"] = "Crear Pedidos";
 }
-
+<link rel="stylesheet" href="~/css/stylesList.css" />
 <h2>Crear Pedidos:</h2>
 
 <form asp-action="Create" method="post">
-    <!-- Seleccionar Mesa -->
+
     <div class="form-group">
         <label>Mesa</label>
         <select asp-for="MesaId" asp-items="ViewBag.Mesas" class="form-control"></select>
     </div>
 
-    <!-- Seleccionar Usuario -->
+
     <div class="form-group">
         <label>Usuario</label>
         <select asp-for="UsuarioId" asp-items="ViewBag.Usuarios" class="form-control"></select>
     </div>
 
-    <!-- Lista de productos, cantidades y precios -->
+
     <h4>Productos del Pedido</h4>
 
     <div id="productos-list">
@@ -27,19 +27,18 @@
 
         {
             <div class="producto-item">
-                <!-- Producto -->
+
                 <div class="form-group">
                     <label>Producto</label>
                     <select asp-for="@item.ProductoId" asp-items="ViewBag.Productos" class="form-control"></select>
                 </div>
 
-                <!-- Cantidad -->
+
                 <div class="form-group">
                     <label>Cantidad</label>
                     <input asp-for="@item.Cantidad" class="form-control" type="number" min="1" />
                 </div>
 
-                 <!-- Precio -->
                 <div class="form-group">
                     <label>Precio</label>
                     <input asp-for="@item.Precio" class="form-control" type="text" readonly />
@@ -68,11 +67,11 @@
 </div>
 @section Scripts {
     <script>
-        // Función para agregar un nuevo producto dinámicamente
+
         function agregarProducto() {
             var index = document.querySelectorAll('.producto-item').length;
 
-            // Crear un nuevo bloque de producto
+
             var newProduct = `
                         <div class="producto-item">
                             <div class="form-group">
@@ -95,7 +94,7 @@
                             <hr />
                         </div>`;
 
-            // Añadir el nuevo bloque al contenedor de productos
+
             document.getElementById('productos-list').insertAdjacentHTML('beforeend', newProduct);
         }
     </script>

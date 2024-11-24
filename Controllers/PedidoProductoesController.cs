@@ -71,16 +71,24 @@ namespace PizzeriaWeb3._1.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.PedidoProductos == null || model.PedidoProductos.Count == 0)
+                if (model.PedidoProductos == null || !model.PedidoProductos.Any())
                 {
                     ModelState.AddModelError("", "Debes agregar al menos un producto.");
-                    ViewData["Productos"] = new SelectList(_context.Productos, "IdProducto", "NombreProducto");
-                    ViewData["Mesas"] = new SelectList(_context.Mesas, "IdMesas", "NombreMesas");
-                    ViewData["Usuarios"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario");
+                    CargarViewData(); // Método para cargar datos
                     return View(model);
                 }
 
-                // Crear el pedido sin productos aún
+                // Combinar productos duplicados sumando sus cantidades
+                var productosUnificados = model.PedidoProductos
+                    .GroupBy(p => p.ProductoId)
+                    .Select(g => new PedidoProducto
+                    {
+                        ProductoId = g.Key,
+                        Cantidad = g.Sum(p => p.Cantidad)
+                    })
+                    .ToList();
+
+                // Crear el pedido principal
                 var pedido = new Pedidos
                 {
                     Fecha = DateTime.Now,
@@ -89,53 +97,55 @@ namespace PizzeriaWeb3._1.Controllers
                     Total = 0
                 };
 
-                // Agregar el pedido a la base de datos para que se genere el PedidoId
                 _context.Pedidos.Add(pedido);
-                await _context.SaveChangesAsync(); // Ahora el PedidoId está disponible
+                await _context.SaveChangesAsync(); // Se genera el ID del pedido
 
                 double totalPedido = 0;
-                foreach (var item in model.PedidoProductos)
+
+                foreach (var item in productosUnificados)
                 {
                     var producto = await _context.Productos.FindAsync(item.ProductoId);
                     if (producto != null && producto.StockProducto >= item.Cantidad)
                     {
+                        // Actualizar stock del producto
                         producto.StockProducto -= item.Cantidad;
+
+                        // Calcular subtotal
                         totalPedido += item.Cantidad * producto.PrecioProducto;
 
-                        var pedidoProducto = new PedidoProducto
-                        {
-                            PedidoId = pedido.IdPedidos, // Aquí puedes usar el PedidoId generado
-                            ProductoId = item.ProductoId,
-                            Cantidad = item.Cantidad,
-                            Precio = producto.PrecioProducto
-                        };
-                        _context.PedidoProductos.Add(pedidoProducto);
+                        // Agregar el detalle del pedido
+                        item.PedidoId = pedido.IdPedidos;
+                        item.Precio = producto.PrecioProducto;
+                        _context.PedidoProductos.Add(item);
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Stock insuficiente para el producto seleccionado.");
-                        ViewData["Productos"] = new SelectList(_context.Productos, "IdProducto", "NombreProducto");
-                        ViewData["Mesas"] = new SelectList(_context.Mesas, "IdMesas", "NombreMesas");
-                        ViewData["Usuarios"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario");
+                        ModelState.AddModelError("", $"Stock insuficiente para el producto {producto?.NombreProducto}.");
+                        CargarViewData();
                         return View(model);
                     }
                 }
 
-                // Actualiza el total del pedido
+                // Actualizar el total del pedido
                 pedido.Total = totalPedido;
-                _context.Pedidos.Update(pedido); // Asegúrate de actualizar el pedido con el total
+                _context.Pedidos.Update(pedido);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction("PedidosCamarero", "Pedidos");
             }
 
-            // Si algo falla, recargamos los datos necesarios para la vista
+            CargarViewData(); // Si algo falla, recargar los datos necesarios
+            return View(model);
+        }
+
+        // Método para cargar datos en ViewData
+        private void CargarViewData()
+        {
             ViewData["Productos"] = new SelectList(_context.Productos, "IdProducto", "NombreProducto");
             ViewData["Mesas"] = new SelectList(_context.Mesas, "IdMesas", "NombreMesas");
             ViewData["Usuarios"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario");
-
-            return View(model);
         }
+
 
 
         // GET: PedidoProductoes/Edit/5
@@ -146,7 +156,7 @@ namespace PizzeriaWeb3._1.Controllers
                 return NotFound();
             }
 
-            // Obtener el pedido con sus productos asociados
+
             var pedido = await _context.Pedidos
                 .Include(p => p.PedidoProductos)
                 .FirstOrDefaultAsync(m => m.IdPedidos == id);
@@ -156,12 +166,12 @@ namespace PizzeriaWeb3._1.Controllers
                 return NotFound();
             }
 
-            // Cargar datos para los SelectLists
+
             ViewData["Productos"] = new SelectList(_context.Productos, "IdProducto", "NombreProducto");
             ViewData["Mesas"] = new SelectList(_context.Mesas, "IdMesas", "NombreMesas");
             ViewData["Usuarios"] = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario");
 
-            // Mapear el pedido a un ViewModel para la vista
+
             var model = new PedidoProductoViewModel
             {
                 IdPedidos = pedido.IdPedidos,
@@ -189,7 +199,7 @@ namespace PizzeriaWeb3._1.Controllers
 
             if (ModelState.IsValid)
             {
-                // Obtener el pedido original para hacer las actualizaciones
+
                 var pedido = await _context.Pedidos
                     .Include(p => p.PedidoProductos)
                     .FirstOrDefaultAsync(m => m.IdPedidos == id);
@@ -199,33 +209,33 @@ namespace PizzeriaWeb3._1.Controllers
                     return NotFound();
                 }
 
-                // Actualizar detalles del pedido
+
                 pedido.MesaId = model.MesaId;
                 pedido.UsuarioId = model.UsuarioId;
-                pedido.Fecha = DateTime.Now; // Actualiza la fecha de modificación
+                pedido.Fecha = DateTime.Now; 
 
                 double totalPedido = 0;
 
-                // Procesar cada producto en el pedido
+   
                 foreach (var item in model.PedidoProductos)
                 {
                     var producto = await _context.Productos.FindAsync(item.ProductoId);
                     if (producto != null && producto.StockProducto >= item.Cantidad)
                     {
-                        // Buscar si el producto ya estaba en el pedido
+
                         var pedidoProducto = pedido.PedidoProductos.FirstOrDefault(pp => pp.ProductoId == item.ProductoId);
 
                         if (pedidoProducto != null)
                         {
-                            // Si el producto ya estaba, actualizamos su cantidad y precio
-                            producto.StockProducto += pedidoProducto.Cantidad; // Devolver el stock antiguo
+
+                            producto.StockProducto += pedidoProducto.Cantidad; 
                             pedidoProducto.Cantidad = item.Cantidad;
-                            producto.StockProducto -= item.Cantidad; // Reducir el stock nuevo
+                            producto.StockProducto -= item.Cantidad; 
                             pedidoProducto.Precio = producto.PrecioProducto;
                         }
                         else
                         {
-                            // Si es un nuevo producto en el pedido
+
                             producto.StockProducto -= item.Cantidad;
 
                             pedido.PedidoProductos.Add(new PedidoProducto
@@ -237,7 +247,7 @@ namespace PizzeriaWeb3._1.Controllers
                             });
                         }
 
-                        // Calcular el total
+
                         totalPedido += item.Cantidad * producto.PrecioProducto;
                     }
                     else
@@ -250,10 +260,10 @@ namespace PizzeriaWeb3._1.Controllers
                     }
                 }
 
-                // Actualizar el total del pedido
+
                 pedido.Total = totalPedido;
 
-                // Guardar los cambios en la base de datos
+
                 try
                 {
                     _context.Update(pedido);
@@ -315,12 +325,12 @@ namespace PizzeriaWeb3._1.Controllers
             if (pedido != null)
             {
                 var pedidoProductos = _context.PedidoProductos.Where(pp => pp.PedidoId == id);
-                _context.PedidoProductos.RemoveRange(pedidoProductos); // Eliminar los productos relacionados
-                _context.Pedidos.Remove(pedido); // Eliminar el pedido
+                _context.PedidoProductos.RemoveRange(pedidoProductos); 
+                _context.Pedidos.Remove(pedido); 
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction(nameof(Index)); // Vuelve al índice o donde desees redirigir
+            return RedirectToAction(nameof(Index)); 
         }
 
 

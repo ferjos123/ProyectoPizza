@@ -17,8 +17,18 @@ namespace PizzeriaWeb3._1.Data
         public DbSet<Roles> Roles { get; set; }
         public object PedidoProducto { get; internal set; }
 
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Data Source=SQL1001.site4now.net;Initial Catalog=db_aafae6_pizzeriawebdapicco;User Id=db_aafae6_pizzeriawebdapicco_admin;Password=ferjos123");
+            }
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<Pedidos>()
                 .HasMany(p => p.PedidoProductos)
                 .WithOne(pp => pp.Pedido)
